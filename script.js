@@ -1,152 +1,144 @@
-// Preload Images
 function preloadImg(url) {
     new Image().src = url;
 }
-['illustration-features-tab-1.svg', 'illustration-features-tab-2.svg', 'illustration-features-tab-3.svg']
-    .forEach(preloadImg);
+preloadImg('illustration-features-tab-1.svg');
+preloadImg('illustration-features-tab-2.svg');
+preloadImg('illustration-features-tab-3.svg');
 
-// DOM Elements
-const DOM = {
-    body: document.querySelector('body'),
-    header: document.querySelector('.header'),
-    menuBtn: document.querySelector('.menu-btn'),
-    featureSection: document.querySelector('.feature'),
-    tabs: document.querySelector('.tabs'),
-    featureHeading: document.querySelector('.feature__heading'),
-    featureDescription: document.querySelector('.feature__description'),
-    featureImg: document.querySelector('.feature__img'),
-    loginBtn: document.querySelector('.header__nav__link--login'),
-    btns: document.querySelectorAll('.btn'),
-    attribution: document.querySelector('.attribution'),
-    attributionImg: document.querySelector('.attribution__img')
-};
 
-// Audio Elements
-const audio = {
-    pop: new Audio('./audio/pop.mp3'),
-    whoosh: new Audio('./audio/whoosh.mp3')
-};
+const body = document.querySelector('body');
+const header = document.querySelector('.header');
+const menuBtn = document.querySelector('.menu-btn');
 
-// Feature Data
-const features = [
+function toggleMobileNav() {
+    header.classList.toggle('mobile-nav--active');
+}
+function disableScroll() {
+    body.classList.toggle('disable-scroll');
+}
+menuBtn.addEventListener('click', () => {
+    toggleMobileNav();
+    disableScroll();
+});
+
+const featureSection = document.querySelector('.feature');
+const tabs = document.querySelector('.tabs');
+const featureHeading = document.querySelector('.feature__heading');
+const featureDescription = document.querySelector('.feature__description');
+const featureImg = document.querySelector('.feature__img');
+
+let features = [
     {
         heading: 'Bookmark in one click',
-        description: 'Organize your bookmarks however you like. Our simple drag-and-drop interface gives you complete control over how you manage your favourite sites.',
+        description:
+            'Organize your bookmarks however you like. Our simple drag-and-drop interface gives you complete control over how you manage your favourite sites.',
         imgPath: 'illustration-features-tab-1.svg',
-        altText: 'dashboard'
+        altText: 'dashboard',
     },
     {
         heading: 'Intelligent search',
-        description: 'Our powerful search feature will help you find saved sites in no time at all. No need to trawl through all of your bookmarks.',
+        description:
+            'Our powerful search feature will help you find saved sites in no time at all. No need to trawl through all of your bookmarks.',
         imgPath: 'illustration-features-tab-2.svg',
-        altText: 'dashboard with magnifying glass'
+        altText: 'dashboard with magnifying glass',
     },
     {
         heading: 'Share your bookmarks',
-        description: 'Easily share your bookmarks and collections with others. Create a shareable link that you can send at the click of a button.',
+        description:
+            'Easily share your bookmarks and collections with others. Create a shareable link that you can send at the click of a button.',
         imgPath: 'illustration-features-tab-3.svg',
-        altText: 'people waving to each other'
-    }
+        altText: 'people waving to each other',
+    },
 ];
 
-// Mobile Navigation
-function toggleMobileNav() {
-    DOM.header.classList.toggle('mobile-nav--active');
-    DOM.body.classList.toggle('disable-scroll');
-}
-
-DOM.menuBtn.addEventListener('click', toggleMobileNav);
-
-// Feature Tabs
 function changeTab(index) {
-    DOM.featureSection.classList.add('fade-out');
+    function changeContent(i) {
+        featureHeading.textContent = features[i].heading;
+        featureDescription.textContent = features[i].description;
+        featureImg.src = features[i].imgPath;
+        featureImg.alt = features[i].altText;
+    }
+
+    featureSection.classList.add('fade-out');
     setTimeout(() => {
-        DOM.featureHeading.textContent = features[index].heading;
-        DOM.featureDescription.textContent = features[index].description;
-        DOM.featureImg.src = features[index].imgPath;
-        DOM.featureImg.alt = features[index].altText;
-        DOM.featureSection.classList.remove('fade-out');
+        changeContent(index);
+        featureSection.classList.remove('fade-out');
     }, 300);
 }
 
-function handleTabChange(e) {
-    if (!e.target.classList.contains('tabs__tab')) return;
+function changeTabs(e) {
+    for (tab of tabs.children) {
+        tab.classList.remove('tabs__tab--active');
+    }
 
-    DOM.tabs.querySelectorAll('.tabs__tab').forEach(tab => tab.classList.remove('tabs__tab--active'));
     e.target.classList.add('tabs__tab--active');
 
-    const tabIndex = { 'tab-1': 0, 'tab-2': 1, 'tab-3': 2 }[e.target.id];
-    if (tabIndex !== undefined) changeTab(tabIndex);
+    if (e.target.id === 'tab-1') {
+        changeTab(0);
+    } else if (e.target.id === 'tab-2') {
+        changeTab(1);
+    } else if (e.target.id === 'tab-3') {
+        changeTab(2);
+    }
 }
 
-DOM.tabs.addEventListener('click', handleTabChange);
-DOM.tabs.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && e.target.classList.contains('tabs__tab')) {
-        handleTabChange(e);
+tabs.addEventListener('click', (e) => {
+    if (e.target.classList.contains('tabs__tab')) {
+        changeTabs(e);
+    }
+});
+tabs.addEventListener('keypress', (e) => {
+    if (e.keyCode === 13 && e.target.classList.contains('tabs__tab')) {
+        changeTabs(e);
     }
 });
 
-// Tab Persistence on Visibility Change
 document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState !== 'visible') return;
-    const activeTab = DOM.tabs.querySelector('.tabs__tab--active');
-    if (activeTab) {
-        const tabIndex = { 'tab-1': 0, 'tab-2': 1, 'tab-3': 2 }[activeTab.id];
-        if (tabIndex !== undefined) changeTab(tabIndex);
+    if (document.visibilityState === 'visible') {
+        const activeTab = document.querySelector('.tabs__tab--active');
+        if (activeTab) {
+            if (activeTab.id === 'tab-1') changeTab(0);
+            else if (activeTab.id === 'tab-2') changeTab(1);
+            else if (activeTab.id === 'tab-3') changeTab(2);
+        }
     }
 });
 
-// Ripple Effect
+const loginBtn = document.querySelector('.header__nav__link--login');
+const btns = document.querySelectorAll('.btn');
+
 function addRippleEffect(el) {
     el.addEventListener('click', (e) => {
-        const { left, top } = e.target.getBoundingClientRect();
-        const ripple = document.createElement('span');
+        let boundingBox = e.target.getBoundingClientRect();
+        let x = e.clientX - boundingBox.left;
+        let y = e.clientY - boundingBox.top;
+
+        let ripple = document.createElement('span');
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
         ripple.classList.add('ripple');
-        ripple.style.left = `${e.clientX - left}px`;
-        ripple.style.top = `${e.clientY - top}px`;
+
         e.target.appendChild(ripple);
-        setTimeout(() => ripple.remove(), 800);
+
+        setTimeout(() => {
+            ripple.remove();
+        }, 800);
     });
 }
 
-[DOM.loginBtn, ...DOM.btns].forEach(addRippleEffect);
+addRippleEffect(loginBtn);
+btns.forEach((btn) => addRippleEffect(btn));
 
-// Attribution Toggle
-DOM.attributionImg.addEventListener('click', () => {
-    DOM.attribution.classList.toggle('attribution-active');
-    audio[DOM.attribution.classList.contains('attribution-active') ? 'whoosh' : 'pop'].play();
-});
+const pop = new Audio('./audio/pop.mp3');
+const whoosh = new Audio('./audio/whoosh.mp3');
+const attribution = document.querySelector('.attribution');
+const attributionImg = document.querySelector('.attribution__img');
 
-// Email Validation
-const ctaForm = document.querySelector('.cta__form');
-const ctaInput = document.querySelector('.cta__input');
-const ctaErrorMessage = document.querySelector('.cta__error-message');
-
-function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-ctaForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Prevent form submission for validation
-    const email = ctaInput.value.trim();
-
-    if (!validateEmail(email)) {
-        ctaInput.classList.add('error');
-        ctaErrorMessage.style.display = 'block';
-        audio.pop.play(); // Play error sound (optional)
+attributionImg.addEventListener('click', () => {
+    attribution.classList.toggle('attribution-active');
+    if (attribution.classList.contains('attribution-active')) {
+        whoosh.play();
     } else {
-        ctaInput.classList.remove('error');
-        ctaErrorMessage.style.display = 'none';
-        // Proceed with form submission (e.g., send to server)
-        console.log('Valid email:', email);
-        // Optionally reset the form
-        ctaForm.reset();
+        pop.play();
     }
-});
-
-// Remove error state on input change
-ctaInput.addEventListener('input', () => {
-    ctaInput.classList.remove('error');
-    ctaErrorMessage.style.display = 'none';
 });
