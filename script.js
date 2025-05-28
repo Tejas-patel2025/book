@@ -116,3 +116,37 @@ DOM.attributionImg.addEventListener('click', () => {
     DOM.attribution.classList.toggle('attribution-active');
     audio[DOM.attribution.classList.contains('attribution-active') ? 'whoosh' : 'pop'].play();
 });
+
+// Email Validation
+const ctaForm = document.querySelector('.cta__form');
+const ctaInput = document.querySelector('.cta__input');
+const ctaErrorMessage = document.querySelector('.cta__error-message');
+
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+ctaForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Prevent form submission for validation
+    const email = ctaInput.value.trim();
+
+    if (!validateEmail(email)) {
+        ctaInput.classList.add('error');
+        ctaErrorMessage.style.display = 'block';
+        audio.pop.play(); // Play error sound (optional)
+    } else {
+        ctaInput.classList.remove('error');
+        ctaErrorMessage.style.display = 'none';
+        // Proceed with form submission (e.g., send to server)
+        console.log('Valid email:', email);
+        // Optionally reset the form
+        ctaForm.reset();
+    }
+});
+
+// Remove error state on input change
+ctaInput.addEventListener('input', () => {
+    ctaInput.classList.remove('error');
+    ctaErrorMessage.style.display = 'none';
+});
