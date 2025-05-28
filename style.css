@@ -1067,86 +1067,52 @@ body {
   stroke: var(--color-soft-red);
 }
 
-.cta {
-  background-color: var(--color-soft-blue);
-  padding: 8rem 4rem;
-  color: white;
-  font-weight: 500;
-  line-height: 5rem;
-  text-align: center;
-}
-
-@media only screen and (min-width: 800px) {
-  .cta {
-    padding: 7.25rem 6rem;
-    padding-bottom: 8.5rem;
-  }
-}
-
-.cta__content-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 442px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.cta__subheading {
-  margin-bottom: 3rem;
-  font-size: 1.625rem;
-  letter-spacing: 5px;
-}
-
-.cta__heading {
-  margin-bottom: 4rem;
-  font-size: 3rem;
-  letter-spacing: -0.1px;
-  line-height: 4rem;
-}
-
-@media only screen and (min-width: 800px) {
-  .cta__heading {
-    font-size: 4rem;
-    line-height: 5rem;
-  }
-}
-
-.cta__form {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 40rem;
-}
-
-@media only screen and (min-width: 600px) {
-  .cta__form {
-    flex-direction: row;
-    max-width: initial;
-  }
-}
-
-.cta__input {
-  flex: 1;
-  flex-basis: 6rem;
-  margin-bottom: 2rem;
-  border: none;
-  border-radius: 5px;
-  padding-left: 2.5rem;
-}
-
-@media only screen and (min-width: 600px) {
-  .cta__input {
-    margin-bottom: 0;
-    margin-right: 2rem;
-  }
-}
-
 .cta__input::placeholder {
   color: rgba(36, 42, 69, 0.250109);
   font-size: 1.75rem;
   letter-spacing: 0.25px;
   line-height: 4rem;
+}
+
+.cta__input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.cta__input:invalid,
+.cta__input.error {
+  border: 2px solid var(--color-soft-red);
+  background-color: rgba(255, 0, 0, 0.05);
+}
+
+.cta__error-message {
+  display: none;
+  position: absolute;
+  bottom: -2.5rem;
+  left: 0;
+  color: var(--color-soft-red);
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.cta__input.error + .cta__error-message {
+  display: block;
+}
+
+@media only screen and (min-width: 600px) {
+  .cta__input-wrapper {
+    flex: 1;
+    margin-right: 2rem;
+  }
+}
+
+.footer {
+  background-color: var(--color-very-dark-blue);
+  padding: 5rem 4rem;
+  color: white;
+  font-weight: 500;
+  line-height: 5rem;
+  text-align: center;
 }
 
 .footer {
