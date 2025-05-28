@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,9 +12,9 @@
 
     <link rel="shortcut icon" href="favicon-32x32.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
-    <title>Frontend Mentor | Bookmark Landing Page</title>
+    <title>Bookmark Landing Page</title>
     <script defer src="script.js"></script>
-</head>
+</head> 
 <body>
     <header class="header animate__animated animate__fadeInDown">
         <div class="header__content-wrapper">
@@ -58,11 +59,11 @@
             </div>
         </div>
     </section>
-
+    
     <section class="features" aria-live="polite">
         <div class="features__content-wrapper">
             <div class="features__header">
-                <h2 class="features__heading heading heading--secondary">Features</h2>
+                   <h2 class="features__heading heading heading--secondary">Features</h2>
                 <p class="features__description paragraph">    Our aim is to make it quick and easy for you to access your favourite websites. Your bookmarks sync between your devices so you can access them on the go.</p>
             </div>
 
@@ -152,15 +153,40 @@
     </section>
 
     <section class="cta">
-        <div class="cta__content-wrapper">
-            <p class="cta__subheading">35,000+ already joined</p>
-            <h2 class="cta__heading" id="form-heading">Stay up-to-date with what we’re doing</h2>
-            <form class="cta__form">
-                <input class="cta__input" type="text" placeholder="Enter your email address" aria-labelledby="form-heading" required>
-                <button class="cta__btn btn btn--red">Contact Us</button>
-            </form>
-        </div>
-    </section>
+  <div class="cta__content-wrapper">
+    <p class="cta__subheading">35,000+ already joined</p>
+    <h2 class="cta__heading" id="form-heading">Stay up-to-date with what we’re doing</h2>
+
+    <!-- Add onsubmit handler -->
+    <form class="cta__form" onsubmit="return validateEmail()">
+      <input class="cta__input" type="email" id="email" placeholder="Enter your email address" aria-labelledby="form-heading" required>
+      <button class="cta__btn btn btn--red">Contact Us</button>
+    </form>
+
+    <!-- Optional: Message display area -->
+    <p id="error-message" style="color: red; display: none;"></p>
+  </div>
+</section>
+
+<script>
+  function validateEmail() {
+    const email = document.getElementById("email").value;
+    const errorMessage = document.getElementById("error-message");
+
+    // Regex for basic email structure
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+      errorMessage.textContent = "Please enter a valid email address";
+      errorMessage.style.display = "block";
+      return false;
+    }
+
+    errorMessage.style.display = "none";
+    return true;
+  }
+</script>
+
 
     <footer class="footer">
         <div class="footer__content-wrapper">
