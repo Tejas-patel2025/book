@@ -1,10 +1,11 @@
+
+// Preload images
 function preloadImg(url) {
     new Image().src = url;
 }
 preloadImg('illustration-features-tab-1.svg');
 preloadImg('illustration-features-tab-2.svg');
 preloadImg('illustration-features-tab-3.svg');
-
 
 const body = document.querySelector('body');
 const header = document.querySelector('.header');
@@ -104,11 +105,29 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
+// --------- Email validation function ----------
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+// --------- Ripple effect with validation for login button ----------
 const loginBtn = document.querySelector('.header__nav__link--login');
-const btns = document.querySelectorAll('.btn');
+const emailInputLogin = document.querySelector('#emailInputLogin'); // Your email input for login
 
 function addRippleEffect(el) {
     el.addEventListener('click', (e) => {
+        // Check if email input exists and validate email on login button click
+        if (el === loginBtn && emailInputLogin) {
+            const email = emailInputLogin.value.trim();
+            if (!isValidEmail(email)) {
+                e.preventDefault();
+                alert('Please enter a valid email address to login.');
+                return;
+            }
+        }
+
+        // Ripple effect
         let boundingBox = e.target.getBoundingClientRect();
         let x = e.clientX - boundingBox.left;
         let y = e.clientY - boundingBox.top;
@@ -127,7 +146,41 @@ function addRippleEffect(el) {
 }
 
 addRippleEffect(loginBtn);
-btns.forEach((btn) => addRippleEffect(btn));
+
+// --------- Ripple effect for other buttons with optional email validation ----------
+// Example generic email input and buttons
+const emailInputGeneric = document.querySelector('#emailInputGeneric'); // Another email input for other buttons
+const btns = document.querySelectorAll('.btn');
+
+btns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+        // Example: if you want to validate email before button action for generic buttons
+        if (emailInputGeneric) {
+            const email = emailInputGeneric.value.trim();
+            if (!isValidEmail(email)) {
+                e.preventDefault();
+                alert('Please enter a valid email address.');
+                return;
+            }
+        }
+
+        // Ripple effect
+        let boundingBox = e.target.getBoundingClientRect();
+        let x = e.clientX - boundingBox.left;
+        let y = e.clientY - boundingBox.top;
+
+        let ripple = document.createElement('span');
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+        ripple.classList.add('ripple');
+
+        e.target.appendChild(ripple);
+
+        setTimeout(() => {
+            ripple.remove();
+        }, 800);
+    });
+});
 
 const pop = new Audio('./audio/pop.mp3');
 const whoosh = new Audio('./audio/whoosh.mp3');
