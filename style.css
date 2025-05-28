@@ -1070,6 +1070,7 @@ body {
 .cta__input::placeholder {
   color: rgba(36, 42, 69, 0.250109);
   font-size: 1.75rem;
+    align-items: center;
   letter-spacing: 0.25px;
   line-height: 4rem;
 }
